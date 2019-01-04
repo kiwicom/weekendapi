@@ -1,0 +1,20 @@
+{
+  "name": "bordelapi",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "npx nodemon --watch src --exec babel-node src/index.js"
+  },
+  "dependencies": {
+    "@babel/preset-env": "^7.2.0",
+    "apollo-server": "^2.3.1",
+    "axios": "^0.18.0",
+    "graphql": "^14.0.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/node": "^7.2.2",
+    "nodemon": "^1.18.9"
+  }
+}
