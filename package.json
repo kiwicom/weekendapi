@@ -10,7 +10,9 @@
     "@babel/preset-env": "^7.2.0",
     "apollo-server": "^2.3.1",
     "axios": "^0.18.0",
-    "graphql": "^14.0.2"
+    "cheerio": "^1.0.0-rc.2",
+    "graphql": "^14.0.2",
+    "jsonframe-cheerio": "^3.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",

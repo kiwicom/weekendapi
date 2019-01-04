@@ -1,12 +1,14 @@
 import gql from 'graphql-tag'
 import { ApolloServer } from 'apollo-server'
 
-import { search } from './nomad'
+import { getFlights, getFlight } from './flights'
+import { getInterests } from './interests'
 
 const PORT = 3123
 
 const typeDefs = gql`
   type PartRendezvous {
+    country: String
     city: String
     iata: String
     timeLocal: Int
@@ -30,10 +32,19 @@ const typeDefs = gql`
     timeUtc: Int
   }
 
+  type Interest {
+    img: String
+    score: String
+    name: String
+    category: String
+    address: String
+  }
+
   type Route {
     from: RouteRendezvous
     to: RouteRendezvous
     parts: [Part]
+    interests: [Interest]
   }
 
   type Item {
@@ -63,15 +74,30 @@ const typeDefs = gql`
 
   type Query {
     search(params: SearchParams!): [Item]
-    item: Item
+    item(bookingToken: String!, interest: String!): Item
   }
 `
 
 const resolvers = {
   Query: {
-    search: (_, { params }) => search(params),
-    item: (_, args) => {
-      return {}
+    search: (_, { params }) => getFlights(params),
+    item: async (_, { bookingToken, interest }) => {
+      const trip = await getFlight({ bookingToken })
+
+      return {
+        ...trip,
+        route: await Promise.all(
+          trip.route.map(async (route) => {
+            const { parts } = route
+            const { to } = parts[parts.length - 1]
+
+            return {
+              ...route,
+              interests: await getInterests(`${to.city}, ${to.country}`, interest),
+            }
+          })
+        )
+      }
     },
   },
 }

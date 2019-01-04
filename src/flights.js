@@ -42,7 +42,7 @@ function mapItem({ price, booking_token, route }) {
   }
 }
 
-export async function search({
+export async function getFlights({
   dateFrom, dateTo,
   returnFrom, returnTo,
   flyFrom, flyTo,
@@ -79,4 +79,48 @@ export async function search({
   const { data } = await axios({ url, method: 'POST', params, data: body })
 
   return data.data.map(mapItem)
+}
+
+export async function getFlight({ bagsCount, passengersCount, bookingToken }) {
+  const params = {
+    bnum: bagsCount || 1,
+    pnum: passengersCount || 1,
+    booking_token: bookingToken,
+    v: 2,
+    affily: 'skypicker',
+  }
+
+  const { data } = await axios({
+    url: 'https://booking-api.skypicker.com/api/v0.1/check_flights',
+    method: 'GET',
+    params,
+  })
+
+  const segments = [0, ...data.segments.map(x => parseInt(x, 10))]
+
+  const { flights, price } = data
+  const route = segments.map((x, i, a) => {
+    return {
+      parts: flights
+        .slice(x, a[i + 1] || flights.length)
+        .map(flight => ({
+          from: {
+            // timeLocal: y.dTime,
+            // timeUtc: y.dTimeUTC,
+            // iata: y.flyFrom,
+            city: flight.src_name,
+            country: flight.src_country,
+          },
+          to: {
+            // timeLocal: y.aTime,
+            // timeUtc: y.dTimeUTC,
+            // iata: y.flyTo,
+            city: flight.dst_name,
+            country: flight.dst_country,
+          }
+        }))
+    }
+  })
+
+  return { bookingToken, price, route }
 }
