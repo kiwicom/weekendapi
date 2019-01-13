@@ -1,6 +1,7 @@
 import gql from 'graphql-tag'
 import { ApolloServer } from 'apollo-server'
 
+import { getLocations } from './locations'
 import { getFlights, getFlight } from './flights'
 import { getInterests } from './interests'
 
@@ -53,6 +54,21 @@ const typeDefs = gql`
     route: [Route]
   }
 
+  type Coords {
+    lat: Float
+    lon: Float
+  }
+
+  type Location {
+    id: String
+    iid: Int
+    code: String
+    coords: Coords
+    slug: String
+    timezone: String
+    type: String
+  }
+
   input Stopover {
     locations: [String]
     nightsFrom: Int
@@ -75,6 +91,7 @@ const typeDefs = gql`
   type Query {
     search(params: SearchParams!): [Item]
     item(bookingToken: String!, interest: String!): Item
+    locations(query: String!): [Location]
   }
 `
 
@@ -99,6 +116,7 @@ const resolvers = {
         )
       }
     },
+    locations: (_, { query }) => getLocations(query),
   },
 }
 
