@@ -10,6 +10,10 @@ const PORT = process.env.PORT || 3123
 const resolvers = {
   Query: {
     search: (_, { params }) => getFlights(params),
+    interests: async (_, { city, country, interest }) => {
+      console.log("interests", { city, country, interest })
+      return await getInterests(`${city}, ${country}`, interest)
+    },
     item: async (_, { bookingToken, interest }) => {
       const trip = await getFlight({ bookingToken })
 
