@@ -26,12 +26,18 @@ const typeDefs = gql`
     timeUtc: Int
   }
 
+  type Coords {
+    lat: Float!
+    lon: Float!
+  }
+
   type Interest {
     img: String
     score: String
     name: String
     category: String
     address: String
+    coords: Coords
   }
 
   type Route {
@@ -47,11 +53,6 @@ const typeDefs = gql`
     route: [Route]
   }
 
-  type Coords {
-    lat: Float!
-    lon: Float!
-  }
-
   type City {
     id: String!
     name: String!
@@ -61,7 +62,7 @@ const typeDefs = gql`
   type Location {
     id: String!
     iid: Int
-    code: String!
+    code: String
     coords: Coords!
     name: String
     slug: String
