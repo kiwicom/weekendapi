@@ -1,17 +1,27 @@
-import axios from 'axios'
+// https://docs.kiwi.com/locations/#locations-collection-get
 
-export async function getLocations(query) {
+import axios from "axios"
+
+export async function getLocations(term, limit = 50) {
+  console.log("limit", limit)
   const params = {
-    limit: 50,
-    locale: 'en-GB',
-    term: query,
-    'X-Client': 'frontend',
+    limit,
+    term,
+    locale: "en-GB",
+    "X-Client": "frontend"
   }
 
-  const { data } = await axios.get(
-    'https://api.skypicker.com/locations/',
-    { params },
-  )
+  const { data } = await axios.get("https://api.skypicker.com/locations/", {
+    params
+  })
 
-  return data.locations.map(x => ({ ...x, iid: x.int_id, coords: x.location }))
+  return data.locations.map(x => ({
+    ...x,
+    iid: x.int_id,
+    coords: x.location,
+    city: x.city && {
+      ...x.city,
+      country: x.city.country && x.city.country.id
+    }
+  }))
 }
