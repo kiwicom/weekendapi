@@ -6,6 +6,9 @@
   "scripts": {
     "start": "npx nodemon --watch src --exec babel-node src/index.js"
   },
+  "now": {
+    "alias": "weekend-api"
+  },
   "dependencies": {
     "@babel/preset-env": "^7.2.0",
     "apollo-server": "^2.3.1",
