@@ -32,12 +32,14 @@ const typeDefs = gql`
   }
 
   type Interest {
+    id: String!
     img: String
-    score: String
-    name: String
+    score: Float
+    name: String!
     category: String
     address: String
     coords: Coords
+    url: String
   }
 
   type Route {
