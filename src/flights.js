@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from "axios"
 
 function mapItem({ price, booking_token, route }) {
   return {
@@ -11,7 +11,7 @@ function mapItem({ price, booking_token, route }) {
         city: x.cityFrom,
         iata: x.flyFrom,
         timeLocal: x.dTime,
-        timeUtc: x.dTimeUTC,
+        timeUtc: x.dTimeUTC
       },
       to: {
         country: x.countryTo.name,
@@ -19,7 +19,7 @@ function mapItem({ price, booking_token, route }) {
         city: x.cityTo,
         iata: x.flyTo,
         timeLocal: x.aTime,
-        timeUtc: x.aTimeUTC,
+        timeUtc: x.aTimeUTC
       },
       parts: x.route.map(y => ({
         carrier: y.airline,
@@ -29,55 +29,59 @@ function mapItem({ price, booking_token, route }) {
           timeLocal: y.dTime,
           timeUtc: y.dTimeUTC,
           iata: y.flyFrom,
-          city: y.cityFrom,
+          city: y.cityFrom
         },
         to: {
           timeLocal: y.aTime,
           timeUtc: y.dTimeUTC,
           iata: y.flyTo,
-          city: y.cityTo,
+          city: y.cityTo
         }
       }))
-    })),
+    }))
   }
 }
 
 export async function getFlights({
-  dateFrom, dateTo,
-  returnFrom, returnTo,
-  flyFrom, flyTo,
+  dateFrom,
+  dateTo,
+  returnFrom,
+  returnTo,
+  flyFrom,
+  flyTo,
   stopovers,
-  adults, children, infants
+  adults,
+  children,
+  infants
 }) {
   const params = {
     adults: adults || 1,
     children: children || 0,
     infants: infants || 0,
     v: 3,
-    curr: 'EUR',
-    locale: 'en',
-    lang: 'en',
-    affilid: 'skypicker',
-    partner: 'picky',
+    curr: "EUR",
+    locale: "en",
+    lang: "en",
+    affilid: "skypicker",
+    partner: "picky",
     date_from: dateFrom,
     date_to: dateTo,
     return_from: returnFrom || null,
     return_to: returnTo || null,
     fly_from: flyFrom,
-    fly_to: flyTo || null,
-    flight_type: 'salesman',
+    fly_to: flyTo || flyFrom,
+    flight_type: "salesman"
   }
 
   const body = {
-    via: stopovers.map(
-      ({ locations, nightsFrom, nightsTo }) =>
-        ({ locations, nights_range: [nightsFrom, nightsTo] })
-    )
+    via: stopovers.map(({ locations, nightsFrom, nightsTo }) => ({
+      locations,
+      nights_range: [nightsFrom, nightsTo]
+    }))
   }
 
-  const url = 'https://api.skypicker.com/traveling_salesman'
-  const { data } = await axios({ url, method: 'POST', params, data: body })
-
+  const url = "https://api.skypicker.com/traveling_salesman"
+  const { data } = await axios({ url, method: "POST", params, data: body })
   return data.data.map(mapItem)
 }
 
@@ -87,13 +91,13 @@ export async function getFlight({ bagsCount, passengersCount, bookingToken }) {
     pnum: passengersCount || 1,
     booking_token: bookingToken,
     v: 2,
-    affily: 'skypicker',
+    affily: "skypicker"
   }
 
   const { data } = await axios({
-    url: 'https://booking-api.skypicker.com/api/v0.1/check_flights',
-    method: 'GET',
-    params,
+    url: "https://booking-api.skypicker.com/api/v0.1/check_flights",
+    method: "GET",
+    params
   })
 
   const segments = [0, ...data.segments.map(x => parseInt(x, 10))]
@@ -101,24 +105,22 @@ export async function getFlight({ bagsCount, passengersCount, bookingToken }) {
   const { flights, price } = data
   const route = segments.map((x, i, a) => {
     return {
-      parts: flights
-        .slice(x, a[i + 1] || flights.length)
-        .map(flight => ({
-          from: {
-            // timeLocal: y.dTime,
-            // timeUtc: y.dTimeUTC,
-            // iata: y.flyFrom,
-            city: flight.src_name,
-            country: flight.src_country,
-          },
-          to: {
-            // timeLocal: y.aTime,
-            // timeUtc: y.dTimeUTC,
-            // iata: y.flyTo,
-            city: flight.dst_name,
-            country: flight.dst_country,
-          }
-        }))
+      parts: flights.slice(x, a[i + 1] || flights.length).map(flight => ({
+        from: {
+          // timeLocal: y.dTime,
+          // timeUtc: y.dTimeUTC,
+          // iata: y.flyFrom,
+          city: flight.src_name,
+          country: flight.src_country
+        },
+        to: {
+          // timeLocal: y.aTime,
+          // timeUtc: y.dTimeUTC,
+          // iata: y.flyTo,
+          city: flight.dst_name,
+          country: flight.dst_country
+        }
+      }))
     }
   })
 
