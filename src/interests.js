@@ -1,16 +1,15 @@
-import axios from 'axios'
-import { cacheAdapterEnhancer } from 'axios-extensions';
+import axios from "axios"
+import { cacheAdapterEnhancer } from "axios-extensions"
 import cheerio from "cheerio"
 import jsonframe from "jsonframe-cheerio"
 
 const https = axios.create({
-  baseURL: 'https://foursquare.com',
-  headers: { 'Cache-Control': 'no-cache' },
+  baseURL: "https://foursquare.com",
+  headers: { "Cache-Control": "no-cache" },
   adapter: cacheAdapterEnhancer(axios.defaults.adapter)
-});
+})
 
 export async function getInterests(near, category) {
-
   const params = {
     near,
     cat: category
@@ -55,8 +54,13 @@ export async function getInterests(near, category) {
   const { results } = JSON.parse(parsedObject).group
   const venues = results.filter(y => y.venue)
 
+  // console.log("venues", venues)
+
   return items.map(x => {
-    const id = x.href.split("/").pop()
+    const id = x.href
+      .split("/")
+      .pop()
+      .split("?")[0] //id sometimes look like '513db9c4e4b0f8b10ae4a2a3?promotedTipId=5c4b092d4c954c0d9197cebf'
 
     const {
       venue: {
