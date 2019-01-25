@@ -76,6 +76,7 @@ const typeDefs = gql`
   type Place {
       id: String,
       name: String,
+      code: String,
   }
 
   input Stopover {

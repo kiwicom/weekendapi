@@ -1,6 +1,15 @@
-import axios from "axios"
+import { setup } from 'axios-cache-adapter'
 import cheerio from "cheerio"
 import jsonframe from "jsonframe-cheerio"
+
+
+const api = setup({
+  // `axios` options
+  baseURL: 'https://foursquare.com/explore',
+  cache: {
+    maxAge: 15 * 60 * 1000
+  }
+})
 
 export async function getInterests(near, category) {
   const params = {
@@ -8,9 +17,9 @@ export async function getInterests(near, category) {
     cat: category
   }
 
-  const { data } = await axios.get("https://foursquare.com/explore", { params })
-  const $ = cheerio.load(data)
+  const { data } = await api.get("https://foursquare.com/explore?" + JSON.stringify(params))
 
+  const $ = cheerio.load(data)
   jsonframe($)
 
   const frame = {

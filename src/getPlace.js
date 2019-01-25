@@ -18,6 +18,7 @@ export async function getPlace(id, limit = 50) {
 
   return ({
     id: location.id,
-    name: location.name
+    name: location.name,
+    code: location.code
   })
 }

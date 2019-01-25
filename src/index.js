@@ -12,7 +12,6 @@ const resolvers = {
   Query: {
     search: (_, { params }) => getFlights(params),
     interests: async (_, { city, country, interest }) => {
-      console.log("interests", { city, country, interest })
       return await getInterests(`${city}, ${country}`, interest)
     },
     item: async (_, { bookingToken, interest }) => {
