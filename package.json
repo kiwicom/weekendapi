@@ -4,7 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "npx nodemon --watch src --exec babel-node src/index.js"
+    "start": "npx nodemon --watch src --exec babel-node src/index.js",
+    "deploy": "now --public && now alias"
   },
   "now": {
     "alias": "weekend-api"
@@ -13,7 +14,6 @@
     "@babel/preset-env": "^7.2.0",
     "apollo-server": "^2.3.1",
     "axios": "^0.18.0",
-    "axios-cache-adapter": "^2.2.1",
     "axios-extensions": "^3.0.5",
     "cheerio": "^1.0.0-rc.2",
     "graphql": "^14.0.2",
