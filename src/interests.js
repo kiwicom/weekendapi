@@ -1,12 +1,15 @@
 import axios from "axios"
-import { cacheAdapterEnhancer } from "axios-extensions"
+import { cacheAdapterEnhancer, Cache } from "axios-extensions"
 import cheerio from "cheerio"
 import jsonframe from "jsonframe-cheerio"
 
 const https = axios.create({
   baseURL: "https://foursquare.com",
   headers: { "Cache-Control": "no-cache" },
-  adapter: cacheAdapterEnhancer(axios.defaults.adapter)
+  adapter: cacheAdapterEnhancer(axios.defaults.adapter, {
+    enabledByDefault: true,
+    defaultCache: new Cache({ maxAge: 1000 * 60 * 60 * 24, max: 200 })
+  })
 })
 
 export async function getInterests(near, category) {
