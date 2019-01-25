@@ -3,7 +3,6 @@
 import axios from "axios"
 
 export async function getLocations(term, limit = 50) {
-  console.log("limit", limit)
   const params = {
     limit,
     term,

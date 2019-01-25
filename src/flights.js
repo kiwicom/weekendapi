@@ -102,23 +102,40 @@ export async function getFlight({ bagsCount, passengersCount, bookingToken }) {
 
   const segments = [0, ...data.segments.map(x => parseInt(x, 10))]
 
-  const { flights, price } = data
+  const { flights } = data
+  const price = data.price || data.total
   const route = segments.map((x, i, a) => {
+    const dest = flights[flights.length - 1]
+    const src = flights[0]
     return {
+      from: {
+        city: src.src_name,
+        country: src.src_country,
+        countryCode: src.src_country
+      },
+      to: {
+        city: dest.src_name,
+        country: dest.src_country,
+        countryCode: dest.src_country
+      },
       parts: flights.slice(x, a[i + 1] || flights.length).map(flight => ({
         from: {
+          name: flight.src_station,
           // timeLocal: y.dTime,
           // timeUtc: y.dTimeUTC,
           // iata: y.flyFrom,
           city: flight.src_name,
-          country: flight.src_country
+          country: flight.src_country,
+          countryCode: flight.src_country
         },
         to: {
+          name: flight.dst_station,
           // timeLocal: y.aTime,
           // timeUtc: y.dTimeUTC,
           // iata: y.flyTo,
           city: flight.dst_name,
-          country: flight.dst_country
+          country: flight.dst_country,
+          countryCode: flight.dst_country
         }
       }))
     }

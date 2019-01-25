@@ -24,12 +24,11 @@ const resolvers = {
             const { parts } = route
             const { to } = parts[parts.length - 1]
 
+            const destination = `${to.city}, ${to.country}`
+            const interests = await getInterests(destination, interest)
             return {
               ...route,
-              interests: await getInterests(
-                `${to.city}, ${to.country}`,
-                interest
-              )
+              interests
             }
           })
         )

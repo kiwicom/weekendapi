@@ -50,7 +50,7 @@ const typeDefs = gql`
   }
 
   type Item {
-    price: Int
+    price: Float
     bookingToken: String
     route: [Route]
   }
@@ -72,11 +72,11 @@ const typeDefs = gql`
     type: String
     city: City
   }
-  
+
   type Place {
-      id: String,
-      name: String,
-      code: String,
+    id: String
+    name: String
+    code: String
   }
 
   input Stopover {
