@@ -22,13 +22,16 @@ const resolvers = {
         route: await Promise.all(
           trip.route.map(async route => {
             const { parts } = route
-            const { to } = parts[parts.length - 1]
+            const destination = parts[parts.length - 1].to
 
-            const destination = `${to.city}, ${to.country}`
-            const interests = await getInterests(destination, interest)
+            const destinationSearch = `${destination.city}, ${
+              destination.country
+            }`
+            const interests = await getInterests(destinationSearch, interest)
             return {
+              interests,
               ...route,
-              interests
+              destination
             }
           })
         )
