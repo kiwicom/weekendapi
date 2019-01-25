@@ -8,15 +8,16 @@ export async function getPlace(id, limit = 50) {
     id,
     locale: "en-GB",
     type: "id",
-    "X-Client": "frontend"
   }
 
   const { data } = await axios.get("https://api.skypicker.com/locations/", {
     params
   })
 
-  return data.locations.map(x => ({
-    id: x.id,
-    name: x.name
-  }))
+  const location = data.locations[0];
+
+  return ({
+    id: location.id,
+    name: location.name
+  })
 }

@@ -101,7 +101,7 @@ const typeDefs = gql`
     search(params: SearchParams!): [Item]
     item(bookingToken: String!, interest: String!): Item
     interests(city: String!, country: String, interest: String!): [Interest]
-    places(id: String!): [Place]
+    place(id: String!): Place
     locations(query: String!, limit: Int): [Location]
   }
 `

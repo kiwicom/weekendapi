@@ -37,7 +37,7 @@ const resolvers = {
       }
     },
     locations: (_, { query, limit }) => getLocations(query, limit),
-    places: (_, { id, limit }) => getPlace(id, limit)
+    place: (_, { id, limit }) => getPlace(id, limit)
   }
 }
 
