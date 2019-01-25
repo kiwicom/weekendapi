@@ -44,6 +44,8 @@ const typeDefs = gql`
 
   type Route {
     destination: RouteRendezvous
+    from: RouteRendezvous
+    to: RouteRendezvous
     parts: [Part]
     interests: [Interest]
   }
