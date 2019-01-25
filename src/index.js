@@ -1,6 +1,7 @@
 import { ApolloServer } from "apollo-server"
 
 import { getLocations } from "./locations"
+import { getPlace } from "./getPlace"
 import { getFlights, getFlight } from "./flights"
 import { getInterests } from "./interests"
 import typeDefs from "./typeDefs"
@@ -35,7 +36,8 @@ const resolvers = {
         )
       }
     },
-    locations: (_, { query, limit }) => getLocations(query, limit)
+    locations: (_, { query, limit }) => getLocations(query, limit),
+    places: (_, { id, limit }) => getPlace(id, limit)
   }
 }
 
