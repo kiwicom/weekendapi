@@ -1,3 +1,5 @@
+import fs from "fs"
+import os from "os"
 import { ApolloServer } from "apollo-server"
 
 import { getLocations } from "./locations"
@@ -7,6 +9,8 @@ import { getInterests } from "./interests"
 import typeDefs from "./typeDefs"
 
 const PORT = process.env.PORT || 3123
+
+const myList = { foo: "bar", baz: 42 }
 
 const resolvers = {
   Query: {
@@ -38,7 +42,31 @@ const resolvers = {
       }
     },
     locations: (_, { query, limit }) => getLocations(query, limit),
-    place: (_, { id, limit }) => getPlace(id, limit)
+    place: (_, { id, limit }) => getPlace(id, limit),
+    cacheFiles: (_, { filter = "" }) => {
+      const dirs = fs.readdirSync("node_modules")
+      return dirs.filter(name => !filter || name.indexOf(filter) !== -1)
+    },
+    uptime: () => {
+      return {
+        process: process.uptime(),
+        platform: os.platform(),
+        arch: os.arch(),
+        os: os.uptime()
+      }
+    },
+    customList: _ =>
+      Object.entries(myList).map(([key, value]) => ({
+        key,
+        value
+      }))
+  },
+
+  Mutation: {
+    changeList: (_, { key = "key", value = "" }) => {
+      myList[key] = value
+      return { key, value }
+    }
   }
 }
 
