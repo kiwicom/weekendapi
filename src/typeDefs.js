@@ -117,7 +117,6 @@ const typeDefs = gql`
     interests(city: String!, country: String, interest: String!): [Interest]
     place(id: String!): Place
     locations(query: String!, limit: Int): [Location]
-
     cacheFiles(filter: String): [String]
     uptime: ServerInfo
     customList: [KeyValue]
