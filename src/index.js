@@ -52,7 +52,11 @@ const resolvers = {
         process: process.uptime(),
         platform: os.platform(),
         arch: os.arch(),
-        os: os.uptime()
+        os: os.uptime(),
+        hostname: os.hostname(),
+        freemem: os.freemem(),
+        release: os.release(),
+        version: require("../package.json").version
       }
     },
     customList: _ =>

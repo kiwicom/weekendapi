@@ -85,6 +85,10 @@ const typeDefs = gql`
     process: String
     arch: String
     os: String
+    hostname: String
+    freemem: Int
+    release: String
+    version: String
   }
 
   input Stopover {
