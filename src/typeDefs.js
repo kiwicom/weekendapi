@@ -122,6 +122,9 @@ const typeDefs = gql`
     place(id: String!): Place
     locations(query: String!, limit: Int): [Location]
     cacheFiles(filter: String): [String]
+    """
+    Informations about server
+    """
     uptime: ServerInfo
     customList: [KeyValue]
   }
