@@ -33,7 +33,7 @@ const typeDefs = gql`
   }
 # single interest
   type Interest {
-    id: String!
+    id: ID!
     img: String
     score: Float
     name: String!
@@ -58,13 +58,13 @@ const typeDefs = gql`
   }
 # City
   type City {
-    id: String!
+    id: ID!
     name: String!
     country: String
   }
 # Single Location
   type Location {
-    id: String!
+    id: ID!
     iid: Int
     code: String
     coords: Coords!
@@ -76,7 +76,7 @@ const typeDefs = gql`
   }
 
   type Place {
-    id: String
+    id: ID
     name: String
     code: String
   }
