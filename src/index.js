@@ -8,6 +8,7 @@ import { getFlights, getFlight } from "./flights"
 import { getInterests } from "./interests"
 import typeDefs from "./typeDefs"
 
+const package = require("../package.json")
 const PORT = process.env.PORT || 3123
 
 const myList = { foo: "bar", baz: 42 }
@@ -56,7 +57,7 @@ const resolvers = {
         hostname: os.hostname(),
         freemem: os.freemem(),
         release: os.release(),
-        version: require("../package.json").version
+        version: package.version
       }
     },
     customList: _ =>
