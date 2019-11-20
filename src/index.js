@@ -8,7 +8,7 @@ import { getFlights, getFlight } from "./flights"
 import { getInterests } from "./interests"
 import typeDefs from "./typeDefs"
 
-const package = require("../package.json")
+const packageInfo = require("../package.json")
 const PORT = process.env.PORT || 3123
 
 const myList = { foo: "bar", baz: 42 }
@@ -48,7 +48,7 @@ const resolvers = {
       const dirs = fs.readdirSync("node_modules")
       return dirs.filter(name => !filter || name.indexOf(filter) !== -1)
     },
-    uptime: () => {
+    serverInfo: () => {
       return {
         process: process.uptime(),
         platform: os.platform(),
@@ -57,7 +57,7 @@ const resolvers = {
         hostname: os.hostname(),
         freemem: os.freemem(),
         release: os.release(),
-        version: package.version
+        version: packageInfo.version
       }
     },
     customList: _ =>
