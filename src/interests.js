@@ -2,6 +2,8 @@ import axios from "axios"
 import { cacheAdapterEnhancer, Cache } from "axios-extensions"
 import cheerio from "cheerio"
 import jsonframe from "jsonframe-cheerio"
+import fs from "fs"
+import crypto from "crypto"
 
 const https = axios.create({
   baseURL: "https://foursquare.com",
@@ -12,13 +14,29 @@ const https = axios.create({
   })
 })
 
+// get data from file
+
+async function getData(params) {
+  const hash = `${params.near.replace(' ', '')}-${params.cat}`
+  const fileName = `./__mocks__/explore${hash}.json`
+
+  if (fs.existsSync(fileName)) {
+    return fs.readFileSync(fileName, "utf-8")
+	}
+
+	const { data } = await https.get("/explore", { params });
+	fs.writeFile(`./__mocks__/${hash}.json`, data)
+
+	return data;
+}
+
 export async function getInterests(near, category) {
   const params = {
     near,
     cat: category
-  }
+	}
 
-  const { data } = await https.get("/explore", { params })
+	const data = await getData(params);
 
   const $ = cheerio.load(data)
   jsonframe($)

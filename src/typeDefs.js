@@ -1,6 +1,7 @@
 import gql from "graphql-tag"
 
 const typeDefs = gql`
+# location
   type PartRendezvous {
     country: String
     city: String
@@ -8,7 +9,7 @@ const typeDefs = gql`
     timeLocal: Int
     timeUtc: Int
   }
-
+# one trip segment
   type Part {
     type: String
     carrier: String
@@ -16,7 +17,7 @@ const typeDefs = gql`
     from: PartRendezvous
     to: PartRendezvous
   }
-
+# single destination data
   type RouteRendezvous {
     country: String
     countryCode: String
@@ -25,14 +26,14 @@ const typeDefs = gql`
     timeLocal: Int
     timeUtc: Int
   }
-
+# coordinates
   type Coords {
     lat: Float!
     lon: Float!
   }
-
+# single interest
   type Interest {
-    id: String!
+    id: ID!
     img: String
     score: Float
     name: String!
@@ -41,7 +42,7 @@ const typeDefs = gql`
     coords: Coords
     url: String
   }
-
+# Single TripSector
   type Route {
     destination: RouteRendezvous
     from: RouteRendezvous
@@ -55,15 +56,15 @@ const typeDefs = gql`
     bookingToken: String
     route: [Route]
   }
-
+# City
   type City {
-    id: String!
+    id: ID!
     name: String!
     country: String
   }
-
+# Single Location
   type Location {
-    id: String!
+    id: ID!
     iid: Int
     code: String
     coords: Coords!
@@ -75,7 +76,7 @@ const typeDefs = gql`
   }
 
   type Place {
-    id: String
+    id: ID
     name: String
     code: String
   }
@@ -91,12 +92,14 @@ const typeDefs = gql`
     version: String
   }
 
+	# Layover between TripSegments (parts)
   input Stopover {
     locations: [String]
     nightsFrom: Int
     nightsTo: Int
   }
 
+  # Searching parameters
   input SearchParams {
     adults: Int
     children: Int
@@ -125,7 +128,7 @@ const typeDefs = gql`
     """
     Informations about server
     """
-    uptime: ServerInfo
+    serverInfo: ServerInfo
     customList: [KeyValue]
   }
 
