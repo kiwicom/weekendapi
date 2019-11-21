@@ -24,8 +24,8 @@ async function getData(params) {
     return fs.readFileSync(fileName, "utf-8")
 	}
 
-	const { data } = await https.get("/explore", { params });
-	fs.writeFile(`./__mocks__/${hash}.json`, data)
+  const { data } = await https.get("/explore", { params });
+	fs.writeFile(`./__mocks__/${hash}.json`, data, () => {})
 
 	return data;
 }
@@ -36,7 +36,7 @@ export async function getInterests(near, category) {
     cat: category
 	}
 
-	const data = await getData(params);
+  const data = await getData(params);
 
   const $ = cheerio.load(data)
   jsonframe($)
