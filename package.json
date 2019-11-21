@@ -1,18 +1,20 @@
 {
   "name": "bordelapi",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "npx nodemon --watch src --exec babel-node src/index.js",
+    "dev": "npx nodemon --watch src --exec babel-node src/index.js",
+    "start": "babel-node src/index.js",
     "deploy": "now --public && now alias"
   },
   "now": {
     "alias": "weekend-api"
   },
+  "engines": {"node" : "10.x.x"},
   "dependencies": {
     "@babel/preset-env": "^7.7.1",
-    "apollo-server": "^2.9.9",
+    "apollo-server": "^2.9.11",
     "axios": "^0.19.0",
     "axios-extensions": "^3.0.6",
     "cheerio": "^1.0.0-rc.3",

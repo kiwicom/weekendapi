@@ -18,14 +18,14 @@ const https = axios.create({
 
 async function getData(params) {
   const hash = `${params.near.replace(' ', '')}-${params.cat}`
-  const fileName = `./__mocks__/explore${hash}.json`
+  const fileName = `./__mocks__/explore${hash}.html`
 
   if (fs.existsSync(fileName)) {
     return fs.readFileSync(fileName, "utf-8")
 	}
 
-	const { data } = await https.get("/explore", { params });
-	fs.writeFile(`./__mocks__/${hash}.json`, data)
+  const { data } = await https.get("/explore", { params });
+	fs.writeFile(`./__mocks__/${hash}.html`, data, () => {})
 
 	return data;
 }
@@ -36,7 +36,7 @@ export async function getInterests(near, category) {
     cat: category
 	}
 
-	const data = await getData(params);
+  const data = await getData(params);
 
   const $ = cheerio.load(data)
   jsonframe($)

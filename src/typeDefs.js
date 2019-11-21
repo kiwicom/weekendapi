@@ -81,13 +81,25 @@ const typeDefs = gql`
     code: String
   }
 
+  type ServerInfo {
+    platform: String
+    process: String
+    arch: String
+    os: String
+    hostname: String
+    freemem: Int
+    release: String
+    version: String
+  }
+
 	# Layover between TripSegments (parts)
   input Stopover {
     locations: [String]
     nightsFrom: Int
     nightsTo: Int
   }
-# Searching parameters
+
+  # Searching parameters
   input SearchParams {
     adults: Int
     children: Int
@@ -101,12 +113,27 @@ const typeDefs = gql`
     stopovers: [Stopover!]!
   }
 
+  type KeyValue {
+    key: String!
+    value: String
+  }
+
   type Query {
     search(params: SearchParams!): [Item]
     item(bookingToken: String!, interest: String!): Item
     interests(city: String!, country: String, interest: String!): [Interest]
     place(id: String!): Place
     locations(query: String!, limit: Int): [Location]
+    cacheFiles(filter: String): [String]
+    """
+    Informations about server
+    """
+    serverInfo: ServerInfo
+    customList: [KeyValue]
+  }
+
+  type Mutation {
+    changeList(key: String!, value: String): KeyValue
   }
 `
 
